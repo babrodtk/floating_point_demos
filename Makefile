@@ -10,3 +10,4 @@ clean:
 $(OUTPUTS): bin/%: src/%.cpp
 	mkdir -p bin
 	g++ -O3 -o $@ -lrt $<
+	./$@
