@@ -5,6 +5,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_float_precision", "msv
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_memory_allocation", "msvc\test_memory_allocation\test_memory_allocation.vcxproj", "{B4E5FC0B-0133-48B4-BECD-120A5322EB70}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_parallel_summation", "msvc\test_parallel_summation\test_parallel_summation.vcxproj", "{BA0A86F0-D54F-4B92-85B5-3EEB1E21C2E7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_kahan_summation", "msvc\test_kahan_summation\test_kahan_summation.vcxproj", "{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +23,14 @@ Global
 		{B4E5FC0B-0133-48B4-BECD-120A5322EB70}.Debug|Win32.Build.0 = Debug|Win32
 		{B4E5FC0B-0133-48B4-BECD-120A5322EB70}.Release|Win32.ActiveCfg = Release|Win32
 		{B4E5FC0B-0133-48B4-BECD-120A5322EB70}.Release|Win32.Build.0 = Release|Win32
+		{BA0A86F0-D54F-4B92-85B5-3EEB1E21C2E7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA0A86F0-D54F-4B92-85B5-3EEB1E21C2E7}.Debug|Win32.Build.0 = Debug|Win32
+		{BA0A86F0-D54F-4B92-85B5-3EEB1E21C2E7}.Release|Win32.ActiveCfg = Release|Win32
+		{BA0A86F0-D54F-4B92-85B5-3EEB1E21C2E7}.Release|Win32.Build.0 = Release|Win32
+		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Debug|Win32.Build.0 = Debug|Win32
+		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Release|Win32.ActiveCfg = Release|Win32
+		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

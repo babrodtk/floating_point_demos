@@ -9,5 +9,5 @@ clean:
 
 $(OUTPUTS): bin/%: src/%.cpp
 	mkdir -p bin
-	g++ -O3 -o $@ -lrt $<
+	g++ -O3 -fopenmp -o $@ -lrt $<
 	./$@
