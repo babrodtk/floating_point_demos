@@ -31,6 +31,7 @@
 #include <iomanip>
 #include <omp.h>
 
+
 /**
   * Computes the sum of ten million value_'s
   */
@@ -53,6 +54,7 @@ template<typename T>
 T parallel_sum_ten_million(const T& value_) {
     unsigned int iterations = 10000000;
     T result = 0.0;
+
     #pragma omp parallel for schedule(dynamic, 50) reduction(+:result)
     for (int i = 0; i<iterations; ++i) {
         result += value_;
@@ -62,23 +64,25 @@ T parallel_sum_ten_million(const T& value_) {
 
 template <typename T>
 void perform_test(const T& value_) {
-    const unsigned int iterations = 15;
+    const unsigned int iterations = 10;
+    const unsigned int max_threads = 8;
     std::cout << "Floating point bits=" << sizeof(T)*8 << std::endl;
-    std::cout << "Serial: " << std::fixed << std::setprecision(50) << sum_ten_million(value_) << std::endl;
-    for (unsigned int i=0; i<iterations; ++i) {
-        T result = parallel_sum_ten_million(value_);
-        std::cout << "Run " << i << ": " << std::fixed << std::setprecision(50) << result << std::endl;
+    for (unsigned int i=1; i<max_threads; ++i) {
+        omp_set_num_threads(i);
+        #pragma omp parallel
+        if (omp_get_thread_num() == 0) {
+            std::cout << "Using " << omp_get_num_threads() << " threads" << std::endl;
+        }
+
+        for (unsigned int j=0; j<iterations; ++j) {
+            T result = parallel_sum_ten_million(value_);
+            std::cout << "`-> Run " << j << ": " << std::fixed << std::setprecision(25) << result << std::endl;
+        }
     }
 }
 
 
-int main() {
-    omp_set_num_threads(10);
-    #pragma omp parallel
-    if (omp_get_thread_num() == 0) {
-        std::cout << "OpenMP float test using " << omp_get_num_threads() << " threads" << std::endl;
-    }
-    
+int main() {    
     float value_f = 0.1f;
     std::cout << "Float:" << std::endl;
     perform_test(value_f);
