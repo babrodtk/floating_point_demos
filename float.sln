@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_parallel_summation", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_kahan_summation", "msvc\test_kahan_summation\test_kahan_summation.vcxproj", "{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_float_summation", "msvc\test_float_summation\test_float_summation.vcxproj", "{D7E1531C-4F0F-4FBB-9451-7332866FD0B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,10 @@ Global
 		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Debug|Win32.Build.0 = Debug|Win32
 		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Release|Win32.ActiveCfg = Release|Win32
 		{DA84B380-4C94-4E23-AAD7-E3B8E1D23891}.Release|Win32.Build.0 = Release|Win32
+		{D7E1531C-4F0F-4FBB-9451-7332866FD0B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D7E1531C-4F0F-4FBB-9451-7332866FD0B5}.Debug|Win32.Build.0 = Debug|Win32
+		{D7E1531C-4F0F-4FBB-9451-7332866FD0B5}.Release|Win32.ActiveCfg = Release|Win32
+		{D7E1531C-4F0F-4FBB-9451-7332866FD0B5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,43 +29,8 @@
 
 #include <iostream>
 #include <iomanip>
-
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <time.h>
-#include <unistd.h>
-#endif
-
-/**
-  * Returns current time in milliseconds
-  */
-unsigned long long getCurrentTimeMS() {
-#ifdef _WIN32
-    LARGE_INTEGER f;
-    LARGE_INTEGER t;
-    QueryPerformanceFrequency(&f);
-    QueryPerformanceCounter(&t);
-    return static_cast<unsigned long long>(t.QuadPart * 1e6/(double) f.QuadPart);
-#else
-    struct timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-    return static_cast<unsigned long long>(ts.tv_sec*1e6+ts.tv_nsec/1e3);
-#endif
-}
-
-/**
-  * Computes the sum of ten million value_'s
-  */
-template<typename T>
-T sum_ten_million(const T& value_) {
-    unsigned int iterations = 10000000;
-    T result = 0.0;
-    for (unsigned int i = 0; i<iterations; ++i) {
-        result += value_;
-    }
-    return result;
-}
+#include <limits>
+#include <cmath>
 
 #ifndef _WIN32
 /**
@@ -73,47 +38,80 @@ T sum_ten_million(const T& value_) {
   * to a long double
   */
 std::ostream& operator<< (std::ostream& out, __float128 val) {
+    const unsigned int* buff = reinterpret_cast<const unsigned int*>(&val);
     out << static_cast<long double>(val);
+    out << " ( ";
+    for (int i=0; i<128; i+=8*sizeof(unsigned int)) {
+        out << std::hex << std::setfill('0') << std::setw(2*sizeof(unsigned int)) << buff[i] << " ";
+    }
+    out << ")";
     return out;
 }
 #endif
 
 template <typename T>
-void perform_test(const T& value_) {
-    unsigned long long start = getCurrentTimeMS();
-    T result = sum_ten_million(value_);
-    unsigned long long end = getCurrentTimeMS();
-    std::cout << "Floating point bits=" << sizeof(T)*8 << std::endl;
-    std::cout << std::fixed << std::setprecision(50) << result << std::setprecision(-1) << std::endl;
-    std::cout << "Completed in " << (end-start) / 1.0e6 << " s." << std::endl;
+void perform_test() {
+    T zero = 0.0;
+    T one = 1.0;
+    T minus_one = -1.0;
+    T a = 54;
+    T b = -54;
+    T c = 54*std::numeric_limits<T>::min();
+    
+    std::cout << std::setprecision(25);
+    std::cout << "=============================" << std::endl;
+    std::cout << "Digits:                             " << std::numeric_limits<T>::digits << std::endl;
+    std::cout << "Epsilon:                            " << std::numeric_limits<T>::epsilon() << std::endl;
+    std::cout << std::endl;
+    std::cout << "Largest positive number:            " << std::numeric_limits<T>::max() << std::endl;
+    std::cout << "Smallest positive normal number:    " << std::numeric_limits<T>::min() << std::endl;
+    std::cout << "Largest positive subnormal number:  " << std::numeric_limits<T>::min() - std::numeric_limits<T>::denorm_min() << std::endl;
+    std::cout << "Smallest positive subnormal number: " << std::numeric_limits<T>::denorm_min() << std::endl;
+    std::cout << std::endl;
+    std::cout << "Largest negative number:            " << -std::numeric_limits<T>::max() << std::endl;
+    std::cout << "Smallest negative normal number:    " << -std::numeric_limits<T>::min() << std::endl;
+    std::cout << "Largest negative subnormal number:  " << -std::numeric_limits<T>::min() + std::numeric_limits<T>::denorm_min() << std::endl;
+    std::cout << "Smallest negative subnormal number: " << -std::numeric_limits<T>::denorm_min() << std::endl;
+    std::cout << std::endl;
+    std::cout << "Signaling NAN:     " << std::numeric_limits<T>::signaling_NaN() << std::endl;
+    std::cout << "Quiet NAN:         " << std::numeric_limits<T>::quiet_NaN() << std::endl;
+    std::cout << "Infinity:          " << std::numeric_limits<T>::infinity() << std::endl;
+    std::cout << "Negative infinity: " << -std::numeric_limits<T>::infinity() << std::endl;
+    std::cout << std::endl;
+    std::cout << "1.0/0.0    = " << one/zero << std::endl;
+    std::cout << "0.0/0.0    = " << zero/zero << std::endl;
+    std::cout << "(-1.0)/0.0 = " << minus_one/zero << std::endl;
+    std::cout << "log(0.0)   = " << log(zero) << std::endl;
+    std::cout << "log(-1.0)  = " << log(minus_one) << std::endl;
+    std::cout << "sqrt(-1.0) = " << sqrt(minus_one) << std::endl;
+    std::cout << std::endl;
+    std::cout << "a+b+c   = " << (a+b+c) << std::endl;
+    std::cout << "(a+b)+c = " << ((a+b)+c) << std::endl;
+    std::cout << "a+(b+c) = " << (a+(b+c)) << std::endl;
+    std::cout << "=============================" << std::endl;
 }
 
-
 int main() {
-    float value_f = 0.1f;
     std::cout << "float:" << std::endl;
-    perform_test(value_f);
+    perform_test<float>();
     std::cout << std::endl;
     
-    double value_d = 0.1;
     std::cout << "double:" << std::endl;
-    perform_test(value_d);
+    perform_test<double>();
     std::cout << std::endl;
 
-    long double value_ld = 0.1;
     std::cout << "long double:" << std::endl;
-    perform_test(value_ld);
+    perform_test<long double>();
     std::cout << std::endl;
 
 #ifndef _WIN32
-    __float80 value_80 = 0.1w;
     std::cout << "__float80:" << std::endl;
-    perform_test(value_80);
+    perform_test<__float80>();
     std::cout << std::endl;
 
-    __float128 value_128 = 0.1q;
     std::cout << "__float128:" << std::endl;
-    perform_test(value_128);
+    perform_test<__float128>();
     std::cout << std::endl;
 #endif
 }
+

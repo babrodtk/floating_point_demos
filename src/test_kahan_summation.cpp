@@ -67,7 +67,7 @@ T parallel_sum(const std::vector<T>& values_) {
 template <typename T>
 T sum(const std::vector<T>& values_) {
     T result = 0.0;
-    for (int i = 0; i<values_.size(); ++i) {
+    for (unsigned int i = 0; i<values_.size(); ++i) {
         result = result + values_[i];
     }
     return result;
@@ -75,7 +75,8 @@ T sum(const std::vector<T>& values_) {
 
 template <typename T>
 void perform_test() {
-    std::vector<T> values(1000000);
+    std::vector<T> values(10000000);
+    srand(0); //Make sure that the random numbers are the same for each run
 
     for (unsigned int i=0; i<values.size(); ++i) {
         values[i] = rand() / static_cast<T>(RAND_MAX);
@@ -96,8 +97,6 @@ void perform_test() {
 
 
 int main() {
-    srand(time(NULL));
-
     omp_set_num_threads(10);
     #pragma omp parallel
     if (omp_get_thread_num() == 0) {
