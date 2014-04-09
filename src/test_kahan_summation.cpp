@@ -41,7 +41,7 @@ T kahan_sum(const std::vector<T>& values_) {
     {
         T thread_result = 0.0;
         T compensation = 0.0;
-        #pragma omp parallel for schedule(dynamic, 50)
+        #pragma omp for schedule(dynamic, 50)
         for (int i = 0; i<values_.size(); ++i) {
             T value = values_[i] - compensation;
             T sum = thread_result + value;
